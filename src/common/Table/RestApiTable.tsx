@@ -34,7 +34,7 @@ export const RestApiTable: React.FC<RestApiTableProps> = ({
   pageSizeOptions = [10, 20, 30, 40, 50],
 }) => {
 
-  const { yearFilter, typefilter, titleFilter } = useSelector((state: any) => state.movies);
+  const { yearFilter, typeFilter, titleFilter } = useSelector((state: any) => state.movies);
 
   const [tableState, setTableState] = useState<TableState>({
     page: 0,
@@ -84,13 +84,12 @@ export const RestApiTable: React.FC<RestApiTableProps> = ({
   }, [data]);
 
   useEffect(() => {
-    console.log(typefilter)
     setTableState(oldState => ({
       ...oldState,
       page: 0,
-      filter: { ...oldState.filter, Title: titleFilter, Year: yearFilter, Type: typefilter }
+      filter: { ...oldState.filter, Title: titleFilter, Year: yearFilter, Type: typeFilter }
     }));
-  }, [yearFilter, typefilter, titleFilter]);
+  }, [yearFilter, typeFilter, titleFilter]);
 
 
   // Pagination methods - START

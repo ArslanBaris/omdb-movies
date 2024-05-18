@@ -12,19 +12,12 @@ const SearchBar = () => {
     const { yearFilter, typefilter, titleFilter } = useSelector((state: any) => state.movies);
 
 
-    const [searchTitle, setSearchTitle] = useState('');
-    const [searchType, setSearchType] = useState('');
-    const [searchYear, setSearchYear] = useState('');
+    const [searchTitle, setSearchTitle] = useState(titleFilter);
+    const [searchType, setSearchType] = useState("");
+    const [searchYear, setSearchYear] = useState(yearFilter);
     const [typingTimeout, setTypingTimeout] = useState(0);
 
-    useEffect(() => {
-        setSearchTitle(titleFilter)
-        setSearchType(typefilter)
-        setSearchYear(yearFilter)
-    }, [yearFilter, typefilter, titleFilter])
-
     const handleChange = (value: string, type: string) => {
-
         switch (type) {
             case 'searchYear':
                 setSearchYear(value)
@@ -103,7 +96,7 @@ const SearchBar = () => {
                         <MenuItem className='select-option' value={"series"}>Series</MenuItem>
                         <MenuItem className='select-option' value={"episode"}>Episode</MenuItem>
                     </TextField>
-
+                   
 
                 </div>
             </div>

@@ -14,7 +14,7 @@ export const setYearFilter = (year: string) => ({
   payload: year,
 });
 
-export const setTypeFilter = (filterType: string) => ({
+export const setTypeFilter = (typeFilter: string) => ({
   type: SET_TYPE_FILTER,
-  payload: filterType,
+  payload: typeFilter,
 });

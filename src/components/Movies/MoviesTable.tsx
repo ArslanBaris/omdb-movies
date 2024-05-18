@@ -23,7 +23,6 @@ interface Params {
 const MoviesTable = () => {
 
   const [tableLoader, setTableLoader] = useState(false)
-    const { filterYear, filterType, searchQuery } = useSelector((state: any) => state.movies);
 
   const navigate = useNavigate()
 
