@@ -112,7 +112,7 @@ export const RestApiTable: React.FC<RestApiTableProps> = ({
 
   return (
     <Box sx={{ width: '100%' }}>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{ boxShadow:"0 2px 5px 0 rgb(0 0 0 / 0.1)" }}>
         <Table sx={{ minWidth: 650 }} className={``} >
           <TableHead>
             {table.getHeaderGroups().map(headerGroup => (

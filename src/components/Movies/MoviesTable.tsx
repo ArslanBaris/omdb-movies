@@ -33,10 +33,10 @@ const MoviesTable = () => {
     if (!validateFilterObject(tableState?.filter))
       return
 
-      if (cancelTokenRef.current) {
-        cancelTokenRef.current.cancel('Operation canceled due to new request.');
-      }
-      
+    if (cancelTokenRef.current) {
+      cancelTokenRef.current.cancel('Operation canceled due to new request.');
+    }
+
     cancelTokenRef.current = axios.CancelToken.source();
 
     let config = {
@@ -65,7 +65,10 @@ const MoviesTable = () => {
     return await axios.get(`${apiUrl}`, config).
       then((resp) => {
         setTableLoader(false)
-        return resp.data
+        if (resp.data.Response === "True")
+          return resp.data
+        else
+          return { Search: [], totalResults: 0 }
       }).catch((err) => {
         if (axios.isCancel(err)) {
           console.log('Request canceled:', err.message);
