@@ -4,6 +4,10 @@ import {
   Table as ReactTable,
 } from '@tanstack/react-table'
 import { DebouncedInputProps} from '../../types/Table'
+import { getValue } from '@testing-library/user-event/dist/utils'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { setTitleFilter, setYearFilter } from '../../redux/actions'
 
 export default function Filter({
     column,
@@ -14,33 +18,32 @@ export default function Filter({
     table: ReactTable<any>
     filterData: (column: any, value: any) => void,
   }) {
-    const filterType = column?.columnDef?.filterFn
+
+  const { yearFilter, titleFilter } = useSelector((state: any) => state.movies);
+  const dispatch = useDispatch();
+
   
     const firstValue = table
       .getPreFilteredRowModel()
       .flatRows[0]?.getValue(column.id)
   
     const columnFilterValue = column.getFilterValue()
-  
-  
+
     const filterFunction = (column:any, value:any) => {
-      filterData(column.id, value)
+      if(column.id== "Title")
+        dispatch(setTitleFilter(value))
+      if(column.id== "Year")
+        dispatch(setYearFilter(value))
     }
-  
+
+    const getValue = () => {
+      if(column.id== "Title")
+        return titleFilter
+      if(column.id== "Year")
+        return yearFilter
+    }
+   
     return typeof firstValue === 'number' ?
-      filterType === 'numericSearch' ?  (
-  
-        <>
-          <DebouncedInput
-            type="number"
-            value={columnFilterValue ?? ''}
-            onChange={value => {filterFunction(column, value)}}
-            placeholder={`Search...`}
-            className="w-36   rounded"
-            list={column.id + 'list'}
-          />
-        </>
-      ) :
       (
         <Grid container spacing={1}>
           <Grid item xs={6}>
@@ -76,7 +79,7 @@ export default function Filter({
      <>
         <DebouncedInput
             type="text"
-            value={columnFilterValue ?? ''}
+            value={getValue()}
             onChange={value => { filterFunction(column, value) }}
             placeholder={`Search...`}
             className="w-36   rounded"

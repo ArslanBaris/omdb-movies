@@ -39,7 +39,6 @@ export const RestApiTable: React.FC<RestApiTableProps> = ({
   const [tableState, setTableState] = useState<TableState>({
     page: 0,
     pageSize: defaultPageSize,
-    totalCount: 0,
     filter: {},
   });
 
@@ -70,18 +69,8 @@ export const RestApiTable: React.FC<RestApiTableProps> = ({
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    //
     debugTable: true,
   })
-
-  useEffect(() => {
-    if (data && data.totalResults !== undefined) {
-      setTableState(oldState => ({
-        ...oldState,
-        totalCount: parseInt(data.totalResults),
-      }));
-    }
-  }, [data]);
 
   useEffect(() => {
     setTableState(oldState => ({
@@ -195,7 +184,8 @@ export const RestApiTable: React.FC<RestApiTableProps> = ({
       </TableContainer>
 
       <RestApiDataTablePagination
-        tableState={tableState}
+        page={tableState?.page}
+        totalCount={parseInt(data?.totalResults) || 0}
         onPageChange={onPageChange}
         showPageSizeOptions={true}
         pageSizeOptions={pageSizeOptions}

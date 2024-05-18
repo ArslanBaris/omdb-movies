@@ -13,7 +13,8 @@ import { PaginationProps, TableState } from '../../types/Table';
 
 
 const RestApiDataTablePagination: React.FC<PaginationProps> = ({
-  tableState,
+  page,
+  totalCount,
   onPageChange,
   showPageSizeOptions,
   pageSizeOptions,
@@ -24,10 +25,9 @@ const RestApiDataTablePagination: React.FC<PaginationProps> = ({
   const [ totalPages, setTotalPages ] = useState(0);
 
   useEffect(() => {
-   
-    setPageState(tableState?.page);
-    setTotalPages(Math.ceil(tableState?.totalCount/ tableState?.pageSize));
-  }, [ tableState]);
+    setPageState(page);
+    setTotalPages(Math.ceil(totalCount/ 10));
+  }, [ page,totalCount]);
 
 
   const renderPageJump = () => {

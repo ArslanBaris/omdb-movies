@@ -12,12 +12,12 @@ export interface RestApiTableProps {
 export interface TableState {
     page: number;
     pageSize: number;
-    totalCount: number;
     filter?: Record<string, any>;
 }
 
 export interface PaginationProps {
-    tableState: TableState;
+    page:number;
+    totalCount:number;
     onPageChange: (page: number) => void;
     showPageSizeOptions: boolean;
     pageSizeOptions: number[];
