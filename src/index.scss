@@ -24,3 +24,27 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.wrapper {
+  background: var(--darkGrey);
+  height: 80px;
+  align-items: center;
+
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: var(--maxWidth);
+    padding: 20px 0;
+    margin: 0 auto;
+    color: var(--lightGrey);
+
+    a {
+      color: var(--medGrey);
+      text-decoration: none;
+      font-size: var(--fontBig);
+
+    }
+  }
+}
