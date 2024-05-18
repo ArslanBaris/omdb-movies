@@ -111,7 +111,7 @@ const MoviesTable = () => {
 
 
   return (
-    <Grid container className='' >
+    <Grid container className='px-2 md:px-10' >
       <Grid item xs={12}  >
         <RestApiTable
           columns={columns}

@@ -97,13 +97,16 @@ const MoviesCards = () => {
                 {
                     totalResults > movies.length && !loadMoreLoader &&
                     <div className='my-10 w-[50%]'>
-                        <Button variant='outlined' fullWidth  onClick={() => setPage((prevPage) => prevPage + 1)}>Load More</Button>
+                        <Button variant='outlined' fullWidth onClick={() => setPage((prevPage) => prevPage + 1)}>Load More</Button>
                     </div>
                 }
+                {
+                    movies.length > 10 &&
+                    <IconButton size='medium' onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className='scroll-up-button' color='primary'>
+                        <ArrowUpward />
+                    </IconButton>
+                }
 
-                <IconButton size='medium' onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className='scroll-up-button' color='primary'>
-                    <ArrowUpward />
-                </IconButton>
 
             </div>
         </div>

@@ -4,7 +4,7 @@
   padding: 40px 20px;
   padding-bottom: 10vh;
   animation: animateMovieInfo 1s;
-  min-height: 80vh;
+  min-height: 85vh;
   background: linear-gradient(to top,
       rgba(0, 0, 0, 0.9) 0%,
       rgba(0, 0, 0, 0) 60%),
@@ -21,8 +21,6 @@
       opacity: 1;
     }
   }
-
-
 
   .movie-content {
     display: flex;
@@ -103,8 +101,7 @@
 
     .movie-text {
       width: 100%;
-      padding-top: 20px;
-      padding-right: 40px;
+      padding: 20px 40px 20px 20px;
       color: var(--white);
       overflow: hidden;
       text-align: left;
@@ -157,7 +154,7 @@
   display: flex;
   width: 100%;
   align-items: center;
-  min-height: 10vh;
+  min-height: 90px;
   background: var(--darkGrey);
   padding: 0 20px;
   bottom: 0;

@@ -72,12 +72,7 @@ const RestApiDataTablePagination: React.FC<PaginationProps> = ({
           </div>)
         }
         <Pagination count={totalPages} page={pageState+1} color="primary" variant="outlined" showFirstButton showLastButton onChange={handleChange} />
-
-      
-          <div className="float-right pt-2">
-            <span className="text-muted text-small mr-1">Items </span>
-            <span>{pageSize}</span>
-          </div>
+     
       </Stack>
 
     </>

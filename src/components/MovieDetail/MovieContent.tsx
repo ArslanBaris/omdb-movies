@@ -18,7 +18,7 @@ const MovieContent = ({ movie }: { movie: Movie }) => {
         <>
 
             <div className='movie-wrapper'>
-                <div className='w-[100%] items-start justify-start flex mb-3 pl-10'>
+                <div className='w-[100%] items-start justify-start flex mb-3 px-0  lg:px-10'>
                     <IconButton className='back-button' onClick={() => navigate("/")}><ArrowBack /></IconButton>
                 </div>
 
@@ -79,7 +79,7 @@ const MovieContent = ({ movie }: { movie: Movie }) => {
                             <div>
                                 <h3 className='mb-2'>RATING</h3>
                                 <div className='flex items-center gap-3'>
-                                    <Rating sx={{ fontSize: "25px" }} name="read-only" precision={0.2} value={convertToStarRating(parseFloat(movie?.imdbRating))} readOnly />
+                                    <Rating sx={{ fontSize: "28px" }} name="read-only" precision={0.2} value={convertToStarRating(parseFloat(movie?.imdbRating))} readOnly />
                                     <div className="score">{movie?.imdbRating == "N/A" ? "?" : movie?.imdbRating}</div>
                                 </div>
                             </div>

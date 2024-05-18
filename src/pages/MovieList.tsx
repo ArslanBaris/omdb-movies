@@ -17,7 +17,7 @@ const MovieList = () => {
       <div className="flex items-center justify-center flex-wrap gap-2 md:gap-5 px-3 md:px-10 mt-10">
         <SearchBar />
       </div>
-      <div className='flex-1 px-5'>
+      <div className='flex-1  px-3 md:px-20'>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={activeTab} onChange={handleChange} >
             <Tab label="Table" />
