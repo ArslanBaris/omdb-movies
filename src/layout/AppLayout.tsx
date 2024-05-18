@@ -10,7 +10,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         <>
             <div>
                 <Navbar />
-                <main className="flex-grow px-3 md:px-10">
+                <main className="flex-grow">
                     {children}
                 </main>
             </div>

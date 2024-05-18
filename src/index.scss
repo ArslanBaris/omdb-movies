@@ -26,12 +26,12 @@ code {
 }
 
 
-.wrapper {
+.navbar-wrapper {
   background: var(--darkGrey);
-  height: 80px;
+  height: 10vh;
   align-items: center;
 
-  .content {
+  .navbar-content {
     display: flex;
     align-items: center;
     justify-content: center;

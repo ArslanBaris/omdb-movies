@@ -6,9 +6,10 @@ import './App.scss';
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import { CircularProgress } from "@mui/material";
 
 const MovieList = lazy(() => import("./pages/MovieList"));
-// const MovieDetail = lazy(() => import("./pages/MovieDetail"));
+const MovieDetail = lazy(() => import("./pages/MovieDetail"));
 const queryClient = new QueryClient()
 
 const App: React.FC = () => {
@@ -18,10 +19,10 @@ const App: React.FC = () => {
         <QueryClientProvider client={queryClient}>
           <AppLayout>
             <Router>
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<div className=""><CircularProgress /></div>}>
                 <Routes>
                   <Route path="/" element={<MovieList />} />
-                  {/* <Route path="/movie/:movie_id" element={<MovieDetail />} /> */}
+                  <Route path="/movie/:movie_id" element={<MovieDetail />} />
                 </Routes>
               </Suspense>
             </Router>
