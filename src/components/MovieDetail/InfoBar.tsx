@@ -18,7 +18,7 @@ const InfoBar: React.FC<InfoBarProps> = ({
         <h3>Running time: {Runtime} </h3>
       </div>
       <div className='column'>
-        <h3>Budget: {BoxOffice}</h3>
+        <h3>Box Office: {BoxOffice}</h3>
       </div>
       <div className='column'>
         <h3>Director: {Director}</h3>

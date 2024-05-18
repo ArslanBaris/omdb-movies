@@ -18,9 +18,8 @@ const MovieContent = ({ movie }: { movie: Movie }) => {
         <>
 
             <div className='movie-wrapper'>
-                <div className='w-[100%] items-start justify-start flex mb-3'>
-                <IconButton className='back-button' onClick={() => navigate("/")}><ArrowBack /></IconButton>
-
+                <div className='w-[100%] items-start justify-start flex mb-3 pl-10'>
+                    <IconButton className='back-button' onClick={() => navigate("/")}><ArrowBack /></IconButton>
                 </div>
 
                 <div className='movie-content'>

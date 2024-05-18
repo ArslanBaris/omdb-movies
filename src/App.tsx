@@ -19,7 +19,7 @@ const App: React.FC = () => {
         <QueryClientProvider client={queryClient}>
           <AppLayout>
             <Router>
-              <Suspense fallback={<div className=""><CircularProgress /></div>}>
+              <Suspense fallback={<div className="mt-20"><CircularProgress /></div>}>
                 <Routes>
                   <Route path="/" element={<MovieList />} />
                   <Route path="/movie/:movie_id" element={<MovieDetail />} />

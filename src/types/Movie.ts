@@ -28,4 +28,12 @@ export interface Movie {
     totalSeasons: string;
     Response: string;
 }
+
+export interface Params {
+        apikey: string;
+        page: number;
+        s?: string;
+        y?: string;
+        type?: string;
+}
   
