@@ -9,11 +9,11 @@ import './style.scss'
 const SearchBar = () => {
     const dispatch = useDispatch();
 
-    const { yearFilter, typefilter, titleFilter } = useSelector((state: any) => state.movies);
+    const { yearFilter, typeFilter, titleFilter } = useSelector((state: any) => state.movies);
 
 
     const [searchTitle, setSearchTitle] = useState(titleFilter);
-    const [searchType, setSearchType] = useState("");
+    const [searchType, setSearchType] = useState(typeFilter);
     const [searchYear, setSearchYear] = useState(yearFilter);
     const [typingTimeout, setTypingTimeout] = useState(0);
 
@@ -33,22 +33,26 @@ const SearchBar = () => {
         }
 
         if (value) {
-            if (typingTimeout) {
-                clearTimeout(typingTimeout);
+
+            if (type === 'searchType') {
+                dispatch(setTypeFilter(value));
+            } else {
+
+                if (typingTimeout) {
+                    clearTimeout(typingTimeout);
+                }
+
+                setTypingTimeout(
+                    window.setTimeout(function () {
+                        if (type === 'searchYear') {
+                            dispatch(setYearFilter(value));
+                        } else if (type === 'searchTitle') {
+                            dispatch(setTitleFilter(value));
+                        }
+
+                    }, 800)
+                );
             }
-
-            setTypingTimeout(
-                window.setTimeout(function () {
-                    if (type === 'searchYear') {
-                        dispatch(setYearFilter(value));
-                    } else if (type === 'searchType') {
-                        dispatch(setTypeFilter(value));
-                    } else if (type === 'searchTitle') {
-                        dispatch(setTitleFilter(value));
-                    }
-
-                }, 800)
-            );
         }
     }
 
@@ -96,7 +100,7 @@ const SearchBar = () => {
                         <MenuItem className='select-option' value={"series"}>Series</MenuItem>
                         <MenuItem className='select-option' value={"episode"}>Episode</MenuItem>
                     </TextField>
-                   
+
 
                 </div>
             </div>
