@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import axios from 'axios';
 import { apiKey, apiUrl } from '../../constants/defaultValues';
 import {
@@ -10,24 +10,17 @@ import { AccessTime, Draw, Inventory, PublishedWithChanges, Settings, Star, Star
 import { TableState } from '../../types/Table';
 import { RestApiTable } from '../../common/Table/RestApiTable';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-
-interface Params {
-  apikey: string;
-  page: number;
-  s?: string;
-  y?: string;
-  type?: string;
-}
+import { Params } from '../../types/Movie';
 
 const MoviesTable = () => {
 
+  const cancelTokenRef = useRef<any>(null);
   const [tableLoader, setTableLoader] = useState(false)
 
   const navigate = useNavigate()
 
   const validateFilterObject = (filter: any) => {
-    if(filter?.Title?.length > 2 || filter?.Year?.length > 2 || filter?.Type?.length > 2) {
+    if (filter?.Title?.length > 2 || filter?.Year?.length > 2 || filter?.Type?.length > 2) {
       setTableLoader(true)
       return true
     } else {
@@ -37,8 +30,14 @@ const MoviesTable = () => {
 
   const getMovies = async (tableState: any) => {
 
-    if(!validateFilterObject(tableState?.filter)) 
+    if (!validateFilterObject(tableState?.filter))
       return
+
+      if (cancelTokenRef.current) {
+        cancelTokenRef.current.cancel('Operation canceled due to new request.');
+      }
+      
+    cancelTokenRef.current = axios.CancelToken.source();
 
     let config = {
       headers: {
@@ -47,18 +46,19 @@ const MoviesTable = () => {
       params: {
         apikey: `${apiKey}`,
         page: tableState?.page + 1,
-        s:"Pokemon"
-      } as Params
+        s: "Pokemon"
+      } as Params,
+      cancelToken: cancelTokenRef.current.token,
     }
 
-    if(tableState?.filter?.Title) {
+    if (tableState?.filter?.Title) {
       config.params.s = tableState?.filter?.Title
     }
-    if(tableState?.filter?.Year) {
+    if (tableState?.filter?.Year) {
       config.params.y = tableState?.filter?.Year
     }
 
-    if(tableState?.filter?.Type) {
+    if (tableState?.filter?.Type) {
       config.params.type = tableState?.filter?.Type
     }
 
@@ -67,7 +67,11 @@ const MoviesTable = () => {
         setTableLoader(false)
         return resp.data
       }).catch((err) => {
-        console.log(err)
+        if (axios.isCancel(err)) {
+          console.log('Request canceled:', err.message);
+        } else {
+          console.error(err);
+        }
       })
 
   }
