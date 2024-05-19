@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { apiKey } from '../constants/defaultValues';
 import axios from 'axios';
@@ -11,11 +11,8 @@ const MovieDetail = () => {
   const { movie_id } = useParams<{ movie_id: string }>();
   const [movie, setMovie] = useState<Movie | null>(null);
 
-  useEffect(() => {
-    getMovieDetail();
-  }, [movie_id]);
 
-  const getMovieDetail = async () => {
+  const getMovieDetail = useCallback(async () => {
     await axios.get(`http://www.omdbapi.com/?i=${movie_id}&apikey=${apiKey}`)
       .then((response) => {
         setMovie(response.data);
@@ -23,7 +20,12 @@ const MovieDetail = () => {
       .catch((error) => {
         console.log(error);
       });
-  }
+  }, [movie_id])
+
+
+  useEffect(() => {
+    getMovieDetail();
+  }, [getMovieDetail]);
 
   return (
     <>

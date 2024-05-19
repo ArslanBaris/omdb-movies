@@ -9,7 +9,6 @@ import {
 import { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import RestApiDataTablePagination from '../Pagination/RestApiDatatablePagination'
-import Filter from '../Filter/Filter'
 import { RestApiTableProps, TableState } from '../../types/Table'
 import { useSelector } from 'react-redux'
 import NoDataFound from '../NoDataFound/NoDataFound'
@@ -29,7 +28,7 @@ export const RestApiTable: React.FC<RestApiTableProps> = ({
     filter: {},
   });
 
-  const { status, data  = { Search: [], totalResults: 0 }, error, isFetching } = useQuery({
+  const {  data  = { Search: [], totalResults: 0 }, isFetching } = useQuery({
     queryKey: ['tableState', tableState],
     queryFn: () => {
         return getData(tableState);
@@ -67,9 +66,9 @@ export const RestApiTable: React.FC<RestApiTableProps> = ({
   // Pagination methods - END
 
   // Filter-Sort methods - START
-  const filterData = (column: any, value: any) => {
-    setTableState((old) => ({ ...old, filter: { ...old.filter, [column]: value } }))
-  }
+  // const filterData = (column: any, value: any) => {
+  //   setTableState((old) => ({ ...old, filter: { ...old.filter, [column]: value } }))
+  // }
 
   const [activeRows, setActiveRows] = useState<boolean[]>([]);
 

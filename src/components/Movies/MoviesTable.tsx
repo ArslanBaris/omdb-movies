@@ -17,16 +17,16 @@ const MoviesTable = () => {
   const navigate = useNavigate()
 
   const validateFilterObject = (filter: any) => {
-    if (!filter?.Title || filter?.Title?.length === 0) 
+    if (!filter?.Title || filter?.Title?.length === 0)
       return false
-     else 
+    else
       return true
   }
 
-  const getMovies = async (tableState: any) => {
+  const getMovies = useCallback(async (tableState: any) => {
 
     if (!validateFilterObject(tableState?.filter))
-    return { Search: [], totalResults: 0 }
+      return { Search: [], totalResults: 0 }
 
     if (cancelTokenRef.current) {
       cancelTokenRef.current.cancel('Operation canceled due to new request.');
@@ -57,8 +57,8 @@ const MoviesTable = () => {
       config.params.type = tableState?.filter?.Type
     }
 
-    return await axios.get(`${apiUrl}`, config).
-      then((resp) => {
+    return await axios.get(`${apiUrl}`, config)
+      .then((resp) => {
         if (resp.data.Response === "True")
           return resp.data
         else
@@ -71,7 +71,7 @@ const MoviesTable = () => {
         }
       })
 
-  }
+  }, [])
 
   const handleTableState = useCallback((tableState: TableState) => {
     return getMovies(tableState);

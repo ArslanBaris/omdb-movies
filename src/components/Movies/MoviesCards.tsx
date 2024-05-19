@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
 import MovieCard from './MovieCard';
 import { apiKey, apiUrl } from '../../constants/defaultValues';
@@ -13,7 +13,7 @@ const MoviesCards = () => {
     const [movies, setMovies] = useState([]);
     const [totalResults, setTotalResults] = useState(0);
     const [page, setPage] = useState(1);
-    const [firstLoader, setFirstLoader] = useState(false);
+    const [initialLoader, setInitialLoader] = useState(false);
     const [loadMoreLoader, setLoadMoreLoader] = useState(false);
 
     const cancelTokenRef = useRef<any>(null);
@@ -26,72 +26,71 @@ const MoviesCards = () => {
         }
     }
 
+    const getMovies = useCallback(async ({ year, type, title, page }: { year: string, type: string, title: string, page: number })=>{
 
-    const getMovies = async ({ year, type, title, page }: { year: string, type: string, title: string, page: number }) => {
-
-        if (!validateFilterObject({ year, type, title })) {
-            setMovies([]);
-            setTotalResults(0);
-            return
-        }
-
-        if (page === 0)
-            setFirstLoader(true)
-        else
-            setLoadMoreLoader(true)
-
-        if (cancelTokenRef.current) {
-            cancelTokenRef.current.cancel('Operation canceled due to new request.');
-        }
-
-        cancelTokenRef.current = axios.CancelToken.source();
-
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            params: {
-                apikey: `${apiKey}`,
-                page: page,
-                s: title || 'Pokemon',
-                y: year || undefined,
-                type: type || undefined,
-            },
-            cancelToken: cancelTokenRef.current.token,
-        };
-
-        await axios.get(`${apiUrl}`, config)
-            .then((resp): any => {
-                if (resp.data.Response === "True") {
-                    setMovies((prev) => (page === 1 ? resp.data.Search : [...prev, ...resp.data.Search]));
-                    setTotalResults(resp.data.totalResults);
-                } else {
-                    setMovies([]);
-                    setTotalResults(0);
-                }
-
-                setLoadMoreLoader(false)
-                setFirstLoader(false)
-            }).catch((err) => {
-                setLoadMoreLoader(false);
-                setFirstLoader(false)
-
-                if (axios.isCancel(err)) {
-                    console.log('Request canceled:', err.message);
-                } else {
-                    console.error(err);
-                }
-            })
-    }
+            if (!validateFilterObject({ year, type, title })) {
+                setMovies([]);
+                setTotalResults(0);
+                return
+            }
+    
+            if (page === 0)
+                setInitialLoader(true)
+            else
+                setLoadMoreLoader(true)
+    
+            if (cancelTokenRef.current) {
+                cancelTokenRef.current.cancel('Operation canceled due to new request.');
+            }
+    
+            cancelTokenRef.current = axios.CancelToken.source();
+    
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                params: {
+                    apikey: `${apiKey}`,
+                    page: page,
+                    s: title || 'Pokemon',
+                    y: year || undefined,
+                    type: type || undefined,
+                },
+                cancelToken: cancelTokenRef.current.token,
+            };
+    
+            await axios.get(`${apiUrl}`, config)
+                .then((resp): any => {
+                    if (resp.data.Response === "True") {
+                        setMovies((prev) => (page === 1 ? resp.data.Search : [...prev, ...resp.data.Search]));
+                        setTotalResults(resp.data.totalResults);
+                    } else {
+                        setMovies([]);
+                        setTotalResults(0);
+                    }
+    
+                    setLoadMoreLoader(false)
+                    setInitialLoader(false)
+                }).catch((err) => {
+                    setLoadMoreLoader(false);
+                    setInitialLoader(false)
+    
+                    if (axios.isCancel(err)) {
+                        console.log('Request canceled:', err.message);
+                    } else {
+                        console.error(err);
+                    }
+                })
+    },[])
 
     useEffect(() => {
         getMovies({ year: yearFilter, type: typeFilter, title: titleFilter, page });
-    }, [yearFilter, typeFilter, titleFilter, page]);
+    }, [yearFilter, typeFilter, titleFilter, page, getMovies]);
 
 
     useEffect(() => {
         setPage(1);
-        setFirstLoader(true);
+        setInitialLoader(true);
     }, [yearFilter, typeFilter, titleFilter]);
 
 
@@ -99,7 +98,7 @@ const MoviesCards = () => {
     return (
         <div>
             <div className="flex items-center justify-center flex-wrap gap-2 md:gap-5 px-3 md:px-10">
-                {firstLoader
+                {initialLoader
                     ? Array.from({ length: 5 }).map((_, index) => <div className="card-placeholder" key={index}></div>)
                     : totalResults === 0 ?
                         <NoDataFound />
