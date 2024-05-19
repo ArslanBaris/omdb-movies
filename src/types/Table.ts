@@ -1,6 +1,5 @@
 export interface RestApiTableProps {
     columns: any[];
-    loader: boolean;
     handleRowClick?: (row: any) => void;
     getData: any;
     manuelPagination?: boolean;

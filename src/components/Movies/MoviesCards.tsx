@@ -4,7 +4,8 @@ import MovieCard from './MovieCard';
 import { apiKey, apiUrl } from '../../constants/defaultValues';
 import { useSelector } from 'react-redux';
 import { Button, CircularProgress, IconButton } from '@mui/material';
-import { ArrowUpward } from '@mui/icons-material';
+import { ArrowUpward, SentimentDissatisfied, Warning } from '@mui/icons-material';
+import NoDataFound from '../../common/NoDataFound/NoDataFound';
 
 const MoviesCards = () => {
     const { yearFilter, typeFilter, titleFilter } = useSelector((state: any) => state.movies);
@@ -17,7 +18,22 @@ const MoviesCards = () => {
 
     const cancelTokenRef = useRef<any>(null);
 
+    const validateFilterObject = (filter: any) => {
+        if (filter?.title?.length == 0) {
+            return false
+        } else {
+            return true
+        }
+    }
+
+
     const getMovies = async ({ year, type, title, page }: { year: string, type: string, title: string, page: number }) => {
+
+        if (!validateFilterObject({ year, type, title })) {
+            setMovies([]);
+            setTotalResults(0);
+            return
+        }
 
         if (page == 0)
             setFirstLoader(true)
@@ -85,7 +101,9 @@ const MoviesCards = () => {
             <div className="flex items-center justify-center flex-wrap gap-2 md:gap-5 px-3 md:px-10">
                 {firstLoader
                     ? Array.from({ length: 5 }).map((_, index) => <div className="card-placeholder" key={index}></div>)
-                    : movies && movies?.length !== 0 && movies.map((movie, index) => <MovieCard key={index} movie={movie} />)}
+                    : totalResults == 0 ?
+                        <NoDataFound />
+                        : movies && movies?.length !== 0 && movies.map((movie, index) => <MovieCard key={index} movie={movie} />)}
             </div>
             <div className='flex justify-center relative'>
                 {

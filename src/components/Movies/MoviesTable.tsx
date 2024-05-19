@@ -15,23 +15,20 @@ import { Params } from '../../types/Movie';
 const MoviesTable = () => {
 
   const cancelTokenRef = useRef<any>(null);
-  const [tableLoader, setTableLoader] = useState(false)
 
   const navigate = useNavigate()
 
   const validateFilterObject = (filter: any) => {
-    if (filter?.Title?.length > 2 || filter?.Year?.length > 2 || filter?.Type?.length > 2) {
-      setTableLoader(true)
-      return true
-    } else {
+    if (!filter?.Title || filter?.Title?.length == 0) 
       return false
-    }
+     else 
+      return true
   }
 
   const getMovies = async (tableState: any) => {
 
     if (!validateFilterObject(tableState?.filter))
-      return
+    return { Search: [], totalResults: 0 }
 
     if (cancelTokenRef.current) {
       cancelTokenRef.current.cancel('Operation canceled due to new request.');
@@ -64,7 +61,6 @@ const MoviesTable = () => {
 
     return await axios.get(`${apiUrl}`, config).
       then((resp) => {
-        setTableLoader(false)
         if (resp.data.Response === "True")
           return resp.data
         else
@@ -117,7 +113,6 @@ const MoviesTable = () => {
           columns={columns}
           pageSizeOptions={[1, 2, 3, 4, 10, 20, 30, 40, 50]}
           manuelPagination={true}
-          loader={tableLoader}
           getData={handleTableState}
           handleRowClick={handleRowClick}
         />

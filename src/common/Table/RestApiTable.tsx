@@ -1,7 +1,5 @@
 import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, InputBase, Paper, TextField, Grid, CircularProgress } from '@mui/material'
 import {
-  Column,
-  Table as ReactTable,
   useReactTable,
   getCoreRowModel,
   getFilteredRowModel,
@@ -9,15 +7,13 @@ import {
   flexRender,
 } from '@tanstack/react-table'
 import { useEffect, useState } from 'react'
-import { Warning } from '@mui/icons-material'
 import { rankItem } from '@tanstack/match-sorter-utils'
-// import { Oval } from 'react-loader-spinner'
 import { useQuery } from '@tanstack/react-query'
 import RestApiDataTablePagination from '../Pagination/RestApiDatatablePagination'
 import Filter from '../Filter/Filter'
 import { RestApiTableProps, TableState } from '../../types/Table'
 import { useSelector } from 'react-redux'
-// import RestApiDataTablePagination from '../Pagination/RestApiDatatablePagination'
+import NoDataFound from '../NoDataFound/NoDataFound'
 
 const customFilterFunction = (row: any, columnId: string, value: any, addMeta: any) => {
   const itemRank = rankItem(row.getValue(columnId), value);
@@ -27,7 +23,6 @@ const customFilterFunction = (row: any, columnId: string, value: any, addMeta: a
 
 export const RestApiTable: React.FC<RestApiTableProps> = ({
   columns,
-  loader,
   handleRowClick,
   getData,
   defaultPageSize = 10,
@@ -42,14 +37,10 @@ export const RestApiTable: React.FC<RestApiTableProps> = ({
     filter: {},
   });
 
-  const { status, data, error, isFetching } = useQuery({
+  const { status, data  = { Search: [], totalResults: 0 }, error, isFetching } = useQuery({
     queryKey: ['tableState', tableState],
     queryFn: () => {
-      if (getData) {
         return getData(tableState);
-      } else {
-        throw new Error('getData function is undefined');
-      }
     },
   })
 
@@ -80,7 +71,6 @@ export const RestApiTable: React.FC<RestApiTableProps> = ({
     }));
   }, [yearFilter, typeFilter, titleFilter]);
 
-
   // Pagination methods - START
   const onPageChange = (page: number) => {
     setTableState((old) => ({ ...old, page: page }))
@@ -94,25 +84,52 @@ export const RestApiTable: React.FC<RestApiTableProps> = ({
 
   const [activeRows, setActiveRows] = useState<boolean[]>([]);
 
-  const handleMouseEnter = (rowIndex: number) => {
+  const handleMouseActivity = (rowIndex: number, isActive: boolean) => {
     setActiveRows((prevActiveRows) => {
       const newActiveRows = [...prevActiveRows];
-      newActiveRows[rowIndex] = true;
+      newActiveRows[rowIndex] = isActive;
       return newActiveRows;
     });
   };
 
-  const handleMouseLeave = (rowIndex: number) => {
-    setActiveRows((prevActiveRows) => {
-      const newActiveRows = [...prevActiveRows];
-      newActiveRows[rowIndex] = false;
-      return newActiveRows;
-    });
-  };
+  const renderTableBody = () => {
+    if ( isFetching ) {
+      return <TableRow style={{ height: "400px", textAlign: "center" }}>
+        <TableCell colSpan={columns.length} style={{ textAlign: "center", verticalAlign: "middle" }}>
+          <div className='d-flex justify-content-center w-100'>
+            <>
+              <CircularProgress />
+            </>
+          </div>
+        </TableCell>
+      </TableRow>
+    }
+
+    if (data?.Search.length == 0) {
+      return <TableRow style={{ height: "300px", textAlign: "center" }} >
+        <TableCell colSpan={columns.length} style={{ textAlign: "center", verticalAlign: "middle" }}>
+          <NoDataFound />
+        </TableCell>
+      </TableRow>
+    }
+
+    return  table.getRowModel().rows.map((row, rowIndex) => {
+      const isActive = activeRows[rowIndex];
+      return (
+        <TableRow key={row.id} style={{ textAlign: "center", cursor: "pointer" }} onClick={() => { if (handleRowClick) { handleRowClick(row) } }} onMouseEnter={() => handleMouseActivity(rowIndex, true)} onMouseLeave={() => handleMouseActivity(rowIndex, false)} >
+          {row.getVisibleCells().map(cell => (
+            <TableCell key={cell.id} className='' sx={{ textAlign: "center", background: isActive ? "#e4e4e4" : "" }}>
+              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            </TableCell>
+          ))}
+        </TableRow>
+      )
+    })
+  }
 
   return (
     <Box sx={{ width: '100%' }}>
-      <TableContainer component={Paper} sx={{ boxShadow:"0 2px 5px 0 rgb(0 0 0 / 0.1)" }}>
+      <TableContainer component={Paper} sx={{ boxShadow: "0 2px 5px 0 rgb(0 0 0 / 0.1)" }}>
         <Table sx={{ minWidth: 650 }} className={``} >
           <TableHead>
             {table.getHeaderGroups().map(headerGroup => (
@@ -143,41 +160,7 @@ export const RestApiTable: React.FC<RestApiTableProps> = ({
             ))}
           </TableHead>
           <TableBody>
-            {
-              loader ?
-                <TableRow style={{ height: "400px", textAlign: "center" }}>
-                  <TableCell colSpan={columns.length} style={{ textAlign: "center", verticalAlign: "middle" }}>
-                    <div className='d-flex justify-content-center w-100'>
-                      <>
-                        <CircularProgress />
-                      </>
-                    </div>
-                  </TableCell>
-                </TableRow> :
-                data == null || data == undefined || data?.Response === "False" || data?.Search == 0  ?
-
-                  <TableRow style={{ height: "300px", textAlign: "center" }} >
-                    <TableCell colSpan={columns.length} style={{ textAlign: "center", verticalAlign: "middle" }}>
-                      <span style={{ fontSize: "25px" }} >
-                        <Warning sx={{ fontSize: "30px" }} /> {" "}
-                        No data found
-                      </span>
-                    </TableCell>
-                  </TableRow>
-                  :
-                  table.getRowModel().rows.map((row, rowIndex) => {
-                    const isActive = activeRows[rowIndex];
-                    return (
-                      <TableRow key={row.id} style={{ textAlign: "center", cursor: "pointer" }} onClick={() => { if (handleRowClick) { handleRowClick(row) } }} onMouseEnter={() => handleMouseEnter(rowIndex)} onMouseLeave={() => handleMouseLeave(rowIndex)} >
-                        {row.getVisibleCells().map(cell => (
-                          <TableCell key={cell.id} className='' sx={{ textAlign: "center", background: isActive ? "#e4e4e4" : "" }}>
-                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    )
-                  }) 
-            }
+          {renderTableBody()}
           </TableBody>
         </Table>
 

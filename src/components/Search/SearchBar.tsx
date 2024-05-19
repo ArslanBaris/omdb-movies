@@ -11,7 +11,6 @@ const SearchBar = () => {
 
     const { yearFilter, typeFilter, titleFilter } = useSelector((state: any) => state.movies);
 
-
     const [searchTitle, setSearchTitle] = useState(titleFilter);
     const [searchType, setSearchType] = useState(typeFilter);
     const [searchYear, setSearchYear] = useState(yearFilter);
@@ -32,7 +31,7 @@ const SearchBar = () => {
                 break;
         }
 
-        if (value) {
+        if (value != null || value !== undefined) {
 
             if (type === 'searchType') {
                 dispatch(setTypeFilter(value));
