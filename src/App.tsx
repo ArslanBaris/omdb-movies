@@ -1,24 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { lazy, Suspense } from "react";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import AppLayout from "./layout/AppLayout";
 
-function App() {
+import './App.scss';
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { Provider } from "react-redux";
+import store from "./redux/store";
+import { CircularProgress } from "@mui/material";
+
+const MovieList = lazy(() => import("./pages/MovieList"));
+const MovieDetail = lazy(() => import("./pages/MovieDetail"));
+const queryClient = new QueryClient()
+
+const App: React.FC = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <AppLayout>
+            <Router>
+              <Suspense fallback={<div className="mt-20"><CircularProgress /></div>}>
+                <Routes>
+                  <Route path="/" element={<MovieList />} />
+                  <Route path="/movie/:movie_id" element={<MovieDetail />} />
+                </Routes>
+              </Suspense>
+            </Router>
+          </AppLayout>
+        </QueryClientProvider>
+      </Provider>
     </div>
   );
 }
