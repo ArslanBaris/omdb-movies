@@ -12,6 +12,7 @@ This is a Single Page Application (SPA) that allows users to list and view detai
 - Material UI
 - Redux
 - Axios
+- Tailwind
 - SCSS
 
 ## Installation
