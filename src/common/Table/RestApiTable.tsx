@@ -1,4 +1,4 @@
-import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, InputBase, Paper, TextField, Grid, CircularProgress } from '@mui/material'
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress } from '@mui/material'
 import {
   useReactTable,
   getCoreRowModel,
@@ -7,20 +7,12 @@ import {
   flexRender,
 } from '@tanstack/react-table'
 import { useEffect, useState } from 'react'
-import { rankItem } from '@tanstack/match-sorter-utils'
 import { useQuery } from '@tanstack/react-query'
 import RestApiDataTablePagination from '../Pagination/RestApiDatatablePagination'
 import Filter from '../Filter/Filter'
 import { RestApiTableProps, TableState } from '../../types/Table'
 import { useSelector } from 'react-redux'
 import NoDataFound from '../NoDataFound/NoDataFound'
-
-const customFilterFunction = (row: any, columnId: string, value: any, addMeta: any) => {
-  const itemRank = rankItem(row.getValue(columnId), value);
-  addMeta(itemRank);
-  return itemRank.passed;
-};
-
 export const RestApiTable: React.FC<RestApiTableProps> = ({
   columns,
   handleRowClick,
@@ -52,9 +44,6 @@ export const RestApiTable: React.FC<RestApiTableProps> = ({
         pageSize: defaultPageSize,
         pageIndex: tableState.page,
       },
-    },
-    filterFns: {
-      numericSearch: customFilterFunction,
     },
     // Pipeline
     getCoreRowModel: getCoreRowModel(),
@@ -105,7 +94,7 @@ export const RestApiTable: React.FC<RestApiTableProps> = ({
       </TableRow>
     }
 
-    if (data?.Search.length == 0) {
+    if (data?.Search.length === 0) {
       return <TableRow style={{ height: "300px", textAlign: "center" }} >
         <TableCell colSpan={columns.length} style={{ textAlign: "center", verticalAlign: "middle" }}>
           <NoDataFound />

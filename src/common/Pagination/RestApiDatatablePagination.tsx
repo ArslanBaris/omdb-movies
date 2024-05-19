@@ -4,12 +4,12 @@ import React, { useState, useEffect } from 'react';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { Dropdown } from '@mui/base/Dropdown';
-import { Menu, MenuListboxSlotProps } from '@mui/base/Menu';
+import { Menu } from '@mui/base/Menu';
 import { MenuButton as BaseMenuButton } from '@mui/base/MenuButton';
 import { MenuItem as BaseMenuItem, menuItemClasses } from '@mui/base/MenuItem';
 import { styled } from '@mui/system';
 import { ArrowDropDown } from '@mui/icons-material';
-import { PaginationProps, TableState } from '../../types/Table';
+import { PaginationProps } from '../../types/Table';
 
 
 const RestApiDataTablePagination: React.FC<PaginationProps> = ({
@@ -21,7 +21,6 @@ const RestApiDataTablePagination: React.FC<PaginationProps> = ({
   showPageJump,
 }) => {
   const [pageState, setPageState] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
   const [ totalPages, setTotalPages ] = useState(0);
 
   useEffect(() => {

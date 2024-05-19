@@ -1,4 +1,4 @@
-import { AccessTime, AttachMoney, Today } from '@mui/icons-material';
+import { AccessTime, Today } from '@mui/icons-material';
 import React from 'react'
 
 interface InfoBarProps {

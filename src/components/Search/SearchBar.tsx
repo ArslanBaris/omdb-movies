@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setTypeFilter, setYearFilter, setTitleFilter } from '../../redux/actions';
 import { Search } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
-import { InputAdornment, MenuItem, Select, TextField } from '@mui/material';
+import { InputAdornment, MenuItem, TextField } from '@mui/material';
 import './style.scss'
 
 const SearchBar = () => {

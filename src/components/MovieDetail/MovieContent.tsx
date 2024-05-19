@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CircularProgress, IconButton, Rating } from '@mui/material';
+import { IconButton, Rating } from '@mui/material';
 import './style.scss';
-import { ArrowBack, CalendarMonth, StarSharp, Stars, StarsOutlined, StarsRounded } from '@mui/icons-material';
+import { ArrowBack, CalendarMonth } from '@mui/icons-material';
 import { Movie } from '../../types/Movie';
 import Thumb from './Thumb';
-import InfoBar from './InfoBar';
 import { convertToStarRating } from '../../utils/Utils';
 
 
@@ -82,7 +81,7 @@ const MovieContent = ({ movie }: { movie: Movie }) => {
                                 <h3 className='mb-2'>IMDB Rating</h3>
                                 <div className='flex items-center gap-3'>
                                     <Rating sx={{ fontSize: "28px" }} name="read-only" precision={0.2} value={convertToStarRating(parseFloat(movie?.imdbRating))} readOnly />
-                                    <div className="score">{movie?.imdbRating == "N/A" ? "?" : movie?.imdbRating}</div>
+                                    <div className="score">{movie?.imdbRating === "N/A" ? "?" : movie?.imdbRating}</div>
                                 </div>
                             </div>
                         </div>

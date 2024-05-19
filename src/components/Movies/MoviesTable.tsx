@@ -1,12 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useRef } from 'react'
 import axios from 'axios';
 import { apiKey, apiUrl } from '../../constants/defaultValues';
 import {
   createColumnHelper,
-  Table as ReactTable,
 } from '@tanstack/react-table'
-import { Card, Button, Grid, IconButton } from '@mui/material'
-import { AccessTime, Draw, Inventory, PublishedWithChanges, Settings, Star, Stars } from '@mui/icons-material';
+import { Grid } from '@mui/material'
 import { TableState } from '../../types/Table';
 import { RestApiTable } from '../../common/Table/RestApiTable';
 import { useNavigate } from 'react-router-dom';
@@ -19,7 +17,7 @@ const MoviesTable = () => {
   const navigate = useNavigate()
 
   const validateFilterObject = (filter: any) => {
-    if (!filter?.Title || filter?.Title?.length == 0) 
+    if (!filter?.Title || filter?.Title?.length === 0) 
       return false
      else 
       return true

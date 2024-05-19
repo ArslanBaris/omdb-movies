@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import MovieCard from './MovieCard';
 import { apiKey, apiUrl } from '../../constants/defaultValues';
 import { useSelector } from 'react-redux';
 import { Button, CircularProgress, IconButton } from '@mui/material';
-import { ArrowUpward, SentimentDissatisfied, Warning } from '@mui/icons-material';
+import { ArrowUpward } from '@mui/icons-material';
 import NoDataFound from '../../common/NoDataFound/NoDataFound';
 
 const MoviesCards = () => {
@@ -19,7 +19,7 @@ const MoviesCards = () => {
     const cancelTokenRef = useRef<any>(null);
 
     const validateFilterObject = (filter: any) => {
-        if (filter?.title?.length == 0) {
+        if (filter?.title?.length === 0) {
             return false
         } else {
             return true
@@ -35,7 +35,7 @@ const MoviesCards = () => {
             return
         }
 
-        if (page == 0)
+        if (page === 0)
             setFirstLoader(true)
         else
             setLoadMoreLoader(true)
@@ -101,7 +101,7 @@ const MoviesCards = () => {
             <div className="flex items-center justify-center flex-wrap gap-2 md:gap-5 px-3 md:px-10">
                 {firstLoader
                     ? Array.from({ length: 5 }).map((_, index) => <div className="card-placeholder" key={index}></div>)
-                    : totalResults == 0 ?
+                    : totalResults === 0 ?
                         <NoDataFound />
                         : movies && movies?.length !== 0 && movies.map((movie, index) => <MovieCard key={index} movie={movie} />)}
             </div>

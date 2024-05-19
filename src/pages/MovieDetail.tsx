@@ -3,8 +3,7 @@ import { useParams } from 'react-router-dom';
 import { apiKey } from '../constants/defaultValues';
 import axios from 'axios';
 import { Movie } from '../types/Movie';
-import { CircularProgress, Rating } from '@mui/material';
-import { CalendarMonth } from '@mui/icons-material';
+import { CircularProgress } from '@mui/material';
 import MovieContent from '../components/MovieDetail/MovieContent';
 import InfoBar from '../components/MovieDetail/InfoBar';
 
