@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { apiKey } from '../constants/defaultValues';
+import { apiKey, apiUrl } from '../constants/defaultValues';
 import axios from 'axios';
 import { Movie } from '../types/Movie';
 import { CircularProgress } from '@mui/material';
@@ -13,7 +13,18 @@ const MovieDetail = () => {
 
 
   const getMovieDetail = useCallback(async () => {
-    await axios.get(`http://www.omdbapi.com/?i=${movie_id}&apikey=${apiKey}`)
+
+    let config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      params: {
+        apikey: `${apiKey}`,
+        i: `${movie_id}`
+      }
+    }
+
+    await axios.get(`${apiUrl}`,config)
       .then((response) => {
         setMovie(response.data);
       })

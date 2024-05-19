@@ -1,2 +1,2 @@
 export const apiKey = process.env.REACT_APP_API_KEY;
-export const apiUrl = "http://www.omdbapi.com"
+export const apiUrl = "https://www.omdbapi.com"
