@@ -98,6 +98,14 @@
       }
     }
 
+    @media screen and (max-width: 1280px ) {
+      .thumb-container {
+        width: 50%;
+      }
+      
+    }
+
+  
 
     .movie-text {
       width: 100%;
@@ -126,7 +134,8 @@
       }
 
       .director {
-        margin: 0 0 0 40px;
+        margin: 0 40px 0 0;
+        min-width: 150px;
 
         p {
           margin: 0;

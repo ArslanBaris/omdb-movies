@@ -1,27 +1,30 @@
+import { AccessTime, AttachMoney, Today } from '@mui/icons-material';
 import React from 'react'
 
 interface InfoBarProps {
   Runtime: string;
   BoxOffice: string;
-  Director: string;
+  Released: string;
 }
 
 const InfoBar: React.FC<InfoBarProps> = ({
     Runtime,
     BoxOffice,
-    Director
+    Released
 }) => {
   return (
     <div className='information-bar-wrapper'> 
     <div className='information-bar-content'>
       <div className='column'>
-        <h3>Running time: {Runtime} </h3>
+        <AccessTime className='mr-1' />
+        <h3> {Runtime} </h3>
       </div>
       <div className='column'>
-        <h3>Box Office: {BoxOffice}</h3>
+        <h3> {BoxOffice}</h3>
       </div>
       <div className='column'>
-        <h3>Director: {Director}</h3>
+        <Today className='mr-1' />
+        <h3> {Released}</h3>
       </div>
     </div>
   </div>

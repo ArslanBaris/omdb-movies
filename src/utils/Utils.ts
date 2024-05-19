@@ -6,5 +6,6 @@ export const truncateString = (str:string, num: number) => {
 }
 
 export const convertToStarRating = (rating: number): number => {
+    if(isNaN(rating)) return 0;
     return (rating / 10) * 5;
 };

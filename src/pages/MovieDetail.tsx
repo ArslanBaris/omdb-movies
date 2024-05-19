@@ -36,7 +36,7 @@ const MovieDetail = () => {
           :
           <>
             <MovieContent movie={movie} />
-            <InfoBar Runtime={movie?.Runtime} BoxOffice={movie?.BoxOffice} Director={movie?.Director} />
+            <InfoBar Runtime={movie?.Runtime} BoxOffice={movie?.BoxOffice} Released={movie?.Released} />
           </>
       }
     </>
